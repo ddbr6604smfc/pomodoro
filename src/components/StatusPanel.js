@@ -28,7 +28,7 @@ export default class StatusPanel extends Component {
 
     const status = pendingTodos > 0
       ? `${pendingTodos} todos pending`
-      : 'All todos finished';
+      : 'No todos pending';
 
     return (
       <div style={styles.container} className="panel panel-default">

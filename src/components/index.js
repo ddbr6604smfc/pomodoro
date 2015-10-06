@@ -29,6 +29,27 @@ export default class App extends Component {
     });
   }
 
+  onToggleStatus = (id) => {
+    const todo = this.state.todos.find(item => item.id === id);
+    const index = this.state.todos.indexOf(todo);
+
+    const nextStatus = {
+      'pending': 'finished',
+      'finished': 'stopped',
+      'stopped': 'pending',
+    };
+
+    const status = nextStatus[todo.status];
+
+    this.setState({
+      todos: [
+        ...this.state.todos.slice(0, index),
+        { ...todo, status: status },
+        ...this.state.todos.slice(index + 1),
+      ],
+    });
+  }
+
   render() {
     const { todos } = this.state;
 
@@ -44,7 +65,7 @@ export default class App extends Component {
 
         <div className="row">
           <div className="col-xs-12">
-            <TodoList todos={todos} />
+            <TodoList todos={todos} toggleStatus={this.onToggleStatus} />
           </div>
         </div>
 
