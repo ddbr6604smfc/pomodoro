@@ -2,12 +2,14 @@ import React, { Component } from 'react';
 import StatusPanel from './StatusPanel';
 import TodoList from './TodoList';
 import AddTodo from './AddTodo';
+import EditToggle from './EditToggle';
 
 export default class App extends Component {
   constructor(props) {
     super(props);
 
     this.state = {
+      editing: false,
       todos: [
         {id: 1, text: 'Deploy latest `soccer` branch', status: 'finished'},
         {id: 2, text: 'signup for heroku', status: 'pending'},
@@ -15,6 +17,12 @@ export default class App extends Component {
         {id: 4, text: 'Finish observables lesson', status: 'stopped'},
       ],
     };
+  }
+
+  onToggleEdit = () => {
+    this.setState({
+      editing: !this.state.editing,
+    });
   }
 
   onAddTodo = (text) => {
@@ -50,8 +58,20 @@ export default class App extends Component {
     });
   }
 
+  onDestroyTodo = (id) => {
+    const todo = this.state.todos.find(item => item.id === id);
+    const index = this.state.todos.indexOf(todo);
+
+    this.setState({
+      todos: [
+        ...this.state.todos.slice(0, index),
+        ...this.state.todos.slice(index + 1),
+      ],
+    });
+  }
+
   render() {
-    const { todos } = this.state;
+    const { editing, todos } = this.state;
 
     const pendingTodos = todos.filter(todo => todo.status === 'pending').length;
 
@@ -65,13 +85,24 @@ export default class App extends Component {
 
         <div className="row">
           <div className="col-xs-12">
-            <TodoList todos={todos} toggleStatus={this.onToggleStatus} />
+            <TodoList
+              todos={todos}
+              editing={editing}
+              toggleStatus={this.onToggleStatus}
+              destroy={this.onDestroyTodo}
+            />
           </div>
         </div>
 
         <div className="row">
           <div className="col-xs-12">
             <AddTodo addTodo={this.onAddTodo} />
+          </div>
+        </div>
+
+        <div className="row">
+          <div className="col-xs-6 col-xs-offset-3 text-center">
+            <EditToggle toggle={this.onToggleEdit} editing={editing} />
           </div>
         </div>
       </div>

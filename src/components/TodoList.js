@@ -4,11 +4,13 @@ import Todo from './Todo';
 export default class TodoList extends Component {
   static propTypes = {
     todos: PropTypes.array.isRequired,
+    editing: PropTypes.bool.isRequired,
     toggleStatus: PropTypes.func.isRequired,
+    destroy: PropTypes.func.isRequired,
   };
 
   render() {
-    const { todos, toggleStatus } = this.props;
+    const { todos, editing, toggleStatus, destroy } = this.props;
 
     const styles = {
       container: {
@@ -20,7 +22,13 @@ export default class TodoList extends Component {
       <ul className="list-group" style={styles.container}>
         {
           todos.map(todo =>
-            <Todo key={todo.id} toggleStatus={toggleStatus} {...todo} />
+            <Todo
+              key={todo.id}
+              toggleStatus={toggleStatus}
+              editing={editing}
+              destroy={destroy}
+              {...todo}
+            />
           )
         }
       </ul>

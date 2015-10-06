@@ -6,11 +6,13 @@ export default class Todo extends Component {
     id: PropTypes.number.isRequired,
     text: PropTypes.string.isRequired,
     status: PropTypes.string.isRequired,
+    editing: PropTypes.bool.isRequired,
     toggleStatus: PropTypes.func.isRequired,
+    destroy: PropTypes.func.isRequired,
   };
 
   render() {
-    const { id, text, status, toggleStatus } = this.props;
+    const { id, text, status, editing, toggleStatus, destroy } = this.props;
 
     const styles = {
       text: {
@@ -30,23 +32,42 @@ export default class Todo extends Component {
     const className = labelClasses[status];
 
     return (
-      <button
-        key={id}
-        className="list-group-item"
-        style={styles.text}
-        onClick={() => toggleStatus(id)}
-      >
+      <li className="list-group-item" style={styles.text}>
         <div className="row">
           <div className="col-xs-9">
             {text}
           </div>
           <div className="col-xs-3">
-            <span className={className}>
-              {status}
-            </span>
+            {
+              editing
+                ? <button className="btn btn-danger btn-xs" onClick={() => destroy(id)}>Delete</button>
+                : <span className={className} onClick={() => toggleStatus(id)}>{status}</span>
+            }
           </div>
         </div>
-      </button>
+      </li>
     );
+    //
+    // return (
+    //   <button
+    //     key={id}
+    //     className="list-group-item"
+    //     style={styles.text}
+    //     onClick={() => toggleStatus(id)}
+    //   >
+    //     <div className="row">
+    //       <div className="col-xs-9">
+    //         {text}
+    //       </div>
+    //       <div className="col-xs-3">
+    //         {
+    //           editing
+    //             ? <button>Delete</button>
+    //             : <span className={className}>{status}</span>
+    //         }
+    //       </div>
+    //     </div>
+    //   </button>
+    // );
   }
 }

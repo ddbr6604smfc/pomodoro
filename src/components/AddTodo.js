@@ -41,7 +41,7 @@ export default class AddTodo extends Component {
       },
 
       container: {
-        marginBottom: '100px', // temp
+        // marginBottom: '100px', // temp
       },
 
       input: {
