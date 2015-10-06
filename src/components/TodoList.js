@@ -9,8 +9,14 @@ export default class TodoList extends Component {
   render() {
     const { todos } = this.props;
 
+    const styles = {
+      container: {
+        marginBottom: '30px',
+      },
+    };
+
     return (
-      <ul className="list-group">
+      <ul className="list-group" style={styles.container}>
         {
           todos.map(todo =>
             <Todo key={todo.id} {...todo} />

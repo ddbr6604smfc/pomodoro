@@ -17,6 +17,18 @@ export default class App extends Component {
     };
   }
 
+  onAddTodo = (text) => {
+    const todo = {
+      id: this.state.todos.length + 1,
+      text,
+      status: 'pending',
+    };
+
+    this.setState({
+      todos: [ ...this.state.todos, todo ],
+    });
+  }
+
   render() {
     const { todos } = this.state;
 
@@ -38,7 +50,7 @@ export default class App extends Component {
 
         <div className="row">
           <div className="col-xs-12">
-            <AddTodo />
+            <AddTodo addTodo={this.onAddTodo} />
           </div>
         </div>
       </div>
