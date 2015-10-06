@@ -1,6 +1,5 @@
 import React, { Component, PropTypes } from 'react';
-import AddTodoForm from './AddTodoForm';
-import AddTodoToggle from './AddTodoToggle';
+import { blue } from '../colors';
 
 export default class AddTodo extends Component {
   static propTypes = {
@@ -11,33 +10,70 @@ export default class AddTodo extends Component {
     super(props);
 
     this.state = {
-      isOpen: false,
+      text: '',
     };
   }
 
-  onToggleOpen = () => {
+  onAddTodo = () => {
+    const text = this.state.text.trim();
+
+    if (text) {
+      this.props.addTodo(text);
+      this.setState({text: ''});
+    }
+  }
+
+  onSubmit = (event) => {
+    event.preventDefault();
+    this.onAddTodo();
+  }
+
+  onChange = (event) => {
     this.setState({
-      isOpen: !this.state.isOpen,
+      text: event.target.value,
     });
   }
 
-  onAddTodo = (text) => {
-    this.props.addTodo(text);
-    this.onToggleOpen();
-  }
-
   render() {
-    const { isOpen } = this.state;
+    const styles = {
+      base: {
+        color: blue,
+      },
+
+      container: {
+        marginBottom: '100px', // temp
+      },
+
+      input: {
+        color: blue,
+        fontSize: '0.9em',
+        fontWeight: 'bold',
+        letterSpacing: '0.2px',
+        padding: '10px 15px',
+        border: '1px solid #ddd',
+        borderRadius: '4px',
+        boxShadow: 'none',
+      },
+    };
 
     return (
-      <div>
-        {
-          isOpen
-            ? <AddTodoForm addTodo={this.onAddTodo} />
-            : null
-        }
-        <AddTodoToggle onToggleOpen={this.onToggleOpen} isOpen={isOpen} />
-      </div>
+      <form onSubmit={this.onSubmit} style={styles.container}>
+        <div className="input-group">
+          <input
+            className="form-control"
+            type="text"
+            placeholder="Todo: "
+            value={this.state.text}
+            onChange={this.onChange}
+            style={{ ...styles.base, ...styles.input }}
+          />
+          <span className="input-group-btn" onClick={this.onAddTodo}>
+            <button style={styles.base} className="btn btn-default" type="button">
+              <span className="glyphicon glyphicon-plus" />
+            </button>
+          </span>
+        </div>
+      </form>
     );
   }
 }
