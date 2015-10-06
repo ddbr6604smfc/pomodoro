@@ -10,7 +10,7 @@
     "test:prod": "npm test ",
     "test:watch": "npm test -- --watch",
     "html:prod": "htmlmin src/index.html -o dist/index.html",
-    "deploy": "npm run lint:prod && npm run test:prod && npm run compile:prod && npm run html:prod && surge -p dist",
+    "deploy": "npm run lint:prod && npm run test:prod && npm run compile:prod && npm run html:prod && surge -p dist -d ruthless-discovery.surge.sh",
     "clean": "rm -rf dist/ src/build",
     "start": "npm run compile:watch"
   },
