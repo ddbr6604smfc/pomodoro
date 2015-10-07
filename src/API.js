@@ -32,10 +32,7 @@ const API = {
   },
 
   toggle(id) {
-    let todos = API.get();
-    const todo = todos.find(item => item.id === id);
-    const index = todos.indexOf(todo);
-
+    const { todos, todo, index } = API.getState(id);
     const nextStatus = {
       'pending': 'finished',
       'finished': 'stopped',
@@ -44,26 +41,32 @@ const API = {
 
     const status = nextStatus[todo.status];
 
-    todos = [
+    localStorage.setItem('todos', JSON.stringify([
       ...todos.slice(0, index),
       { ...todo, status: status },
       ...todos.slice(index + 1),
-    ];
-
-    localStorage.setItem('todos', JSON.stringify(todos));
+    ]));
   },
 
   destroy(id) {
-    let todos = API.get();
+    const { todos, index } = API.getState(id);
+
+    localStorage.setItem('todos', JSON.stringify([
+      ...todos.slice(0, index),
+      ...todos.slice(index + 1),
+    ]));
+  },
+
+  getState(id) {
+    const todos = API.get();
     const todo = todos.find(item => item.id === id);
     const index = todos.indexOf(todo);
 
-    todos = [
-      ...todos.slice(0, index),
-      ...todos.slice(index + 1),
-    ];
-
-    localStorage.setItem('todos', JSON.stringify(todos));
+    return {
+      todos,
+      todo,
+      index,
+    };
   },
 };
 
