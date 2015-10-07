@@ -31,43 +31,36 @@ export default class Todo extends Component {
 
     const className = labelClasses[status];
 
+    const destroyButton = (
+      <div className="col-xs-3">
+        <button
+          className="btn btn-danger btn-xs"
+          onClick={() => destroy(id)}>
+          Delete
+        </button>
+      </div>
+    );
+
+    const statusLabel = (
+      <div className="col-xs-3">
+        <span
+          className={className}
+          onClick={() => toggleStatus(id)}>
+          {status}
+        </span>
+      </div>
+    );
+
     return (
       <li className="list-group-item" style={styles.text}>
         <div className="row">
+          { editing ? destroyButton : null }
           <div className="col-xs-9">
             {text}
           </div>
-          <div className="col-xs-3">
-            {
-              editing
-                ? <button className="btn btn-danger btn-xs" onClick={() => destroy(id)}>Delete</button>
-                : <span className={className} onClick={() => toggleStatus(id)}>{status}</span>
-            }
-          </div>
+          { editing ? null : statusLabel }
         </div>
       </li>
     );
-    //
-    // return (
-    //   <button
-    //     key={id}
-    //     className="list-group-item"
-    //     style={styles.text}
-    //     onClick={() => toggleStatus(id)}
-    //   >
-    //     <div className="row">
-    //       <div className="col-xs-9">
-    //         {text}
-    //       </div>
-    //       <div className="col-xs-3">
-    //         {
-    //           editing
-    //             ? <button>Delete</button>
-    //             : <span className={className}>{status}</span>
-    //         }
-    //       </div>
-    //     </div>
-    //   </button>
-    // );
   }
 }
