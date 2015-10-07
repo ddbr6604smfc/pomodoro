@@ -3,7 +3,7 @@ import { blue } from '../colors';
 
 export default class Todo extends Component {
   static propTypes = {
-    id: PropTypes.number.isRequired,
+    id: PropTypes.string.isRequired,
     text: PropTypes.string.isRequired,
     status: PropTypes.string.isRequired,
     editing: PropTypes.bool.isRequired,

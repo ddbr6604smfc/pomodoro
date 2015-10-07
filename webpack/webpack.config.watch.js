@@ -25,7 +25,7 @@ module.exports = {
     ],
   },
 
-  devtool: 'eval',
+  devtool: 'eval-source-map',
 
   plugins: [
     new webpack.HotModuleReplacementPlugin(),

@@ -1,38 +1,33 @@
+import { generate } from 'randomstring';
+import defaultTodos from './todos';
+
 const API = {
   create(text) {
+    const todos = API.getState();
+
     const todo = {
-      id: Math.random(),
+      id: generate(),
       text,
       status: 'pending',
     };
 
-    let todos = API.get();
-    todos = [ ...todos, todo ];
-
-    localStorage.setItem('todos', JSON.stringify(todos));
+    API.saveState({
+      ...todos,
+      [todo.id]: todo,
+    });
 
     return todo;
   },
 
   get() {
-    let todos = JSON.parse(localStorage.getItem('todos'));
-
-    if (!todos) {
-      todos = [
-        {id: Math.random(), text: 'Deploy latest `soccer` branch', status: 'finished'},
-        {id: Math.random(), text: 'signup for heroku', status: 'pending'},
-        {id: Math.random(), text: 'Split up Routes & Containers', status: 'pending'},
-        {id: Math.random(), text: 'Finish observables lesson', status: 'stopped'},
-      ];
-
-      localStorage.setItem('todos', JSON.stringify(todos));
-    }
-
-    return todos;
+    const todos = API.getState();
+    return Object.keys(todos).map(id => todos[id]);
   },
 
   toggle(id) {
-    const { todos, todo, index } = API.getState(id);
+    const todos = API.getState();
+    const todo = todos[id];
+
     const nextStatus = {
       'pending': 'finished',
       'finished': 'stopped',
@@ -41,32 +36,38 @@ const API = {
 
     const status = nextStatus[todo.status];
 
-    localStorage.setItem('todos', JSON.stringify([
-      ...todos.slice(0, index),
-      { ...todo, status: status },
-      ...todos.slice(index + 1),
-    ]));
+    API.saveState({
+      ...todos,
+      [todo.id]: {
+        ...todo,
+        status,
+      },
+    });
   },
 
   destroy(id) {
-    const { todos, index } = API.getState(id);
-
-    localStorage.setItem('todos', JSON.stringify([
-      ...todos.slice(0, index),
-      ...todos.slice(index + 1),
-    ]));
+    const todos = API.getState();
+    delete todos[id];
+    API.saveState(todos);
   },
 
-  getState(id) {
-    const todos = API.get();
-    const todo = todos.find(item => item.id === id);
-    const index = todos.indexOf(todo);
+  getState() {
+    let todos = JSON.parse(localStorage.getItem('todos'));
 
-    return {
-      todos,
-      todo,
-      index,
-    };
+    if (!todos) {
+      todos = API.createNewLocalStorageTodos();
+    }
+
+    return todos;
+  },
+
+  saveState(todos) {
+    localStorage.setItem('todos', JSON.stringify(todos));
+  },
+
+  createNewLocalStorageTodos() {
+    API.saveState(defaultTodos);
+    return defaultTodos;
   },
 };
 

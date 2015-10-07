@@ -17,6 +17,7 @@
   "dependencies": {
     "history": "^1.9.1",
     "isomorphic-fetch": "^2.1.1",
+    "randomstring": "^1.1.0",
     "react": "^0.14.0-rc1",
     "react-dom": "^0.14.0-rc1",
     "react-redux": "^3.0.1",
