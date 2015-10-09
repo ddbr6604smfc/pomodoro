@@ -24,7 +24,7 @@ const defaultTodos = {
 };
 
 const API = {
-  create(text) {
+  add(text) {
     const todos = API.getState();
 
     const todo = {
@@ -67,7 +67,7 @@ const API = {
     });
   },
 
-  destroy(id) {
+  remove(id) {
     const todos = API.getState();
     delete todos[id];
     API.saveState(todos);

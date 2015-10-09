@@ -18,7 +18,7 @@ export default class App extends Component {
   }
 
   onAddTodo = (text) => {
-    API.create(text);
+    API.add(text);
     this.onUpdate();
   }
 
