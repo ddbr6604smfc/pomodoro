@@ -36,7 +36,7 @@ export default class List extends Component {
         <Todo
           { ...todo }
           isEditing={this.state.isEditing}
-          toggle={() => toggleTodo(todo.id)}
+          toggle={() => toggleTodo(todo.id, todo.status)}
           remove={() => removeTodo(todo.id)}
         />
       </li>

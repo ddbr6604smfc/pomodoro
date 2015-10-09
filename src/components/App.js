@@ -7,29 +7,28 @@ export default class App extends Component {
     super(props);
 
     this.state = {
-      todos: API.get(),
+      todos: [],
     };
   }
 
-  onUpdate = () => {
-    this.setState({
-      todos: API.get(),
-    });
+  componentDidMount() {
+    this.getUpdatedTodos();
   }
 
   onAddTodo = (text) => {
-    API.add(text);
-    this.onUpdate();
+    API.add(text).then(this.getUpdatedTodos);
   }
 
-  onToggleTodo = (id) => {
-    API.toggle(id);
-    this.onUpdate();
+  onToggleTodo = (id, status) => {
+    API.toggle(id, status).then(this.getUpdatedTodos);
   }
 
   onRemoveTodo = (id) => {
-    API.destroy(id);
-    this.onUpdate();
+    API.remove(id).then(this.getUpdatedTodos);
+  }
+
+  getUpdatedTodos = () => {
+    API.get().then(todos => this.setState({ todos }));
   }
 
   render() {
