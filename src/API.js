@@ -6,7 +6,7 @@ const headers = {
   'X-Parse-REST-API-Key': 'Qv0Os8haaE8QAbi9GNECnpMFf6oZPZDedK1jjgpT',
 };
 
-function get() {
+function getTodos() {
   return fetch('https://api.parse.com/1/classes/Todo', { headers })
     .then(response => response.json())
     .then(response => {
@@ -14,7 +14,7 @@ function get() {
     });
 }
 
-function add(text) {
+function addTodo(text) {
   const options = {
     method: 'post',
     headers,
@@ -27,7 +27,7 @@ function add(text) {
   return fetch('https://api.parse.com/1/classes/Todo', options);
 }
 
-function toggle(id, status) {
+function toggleTodo(id, status) {
   const nextStatus = {
     'pending': 'finished',
     'finished': 'stopped',
@@ -45,7 +45,7 @@ function toggle(id, status) {
   return fetch(`https://api.parse.com/1/classes/Todo/${id}`, options);
 }
 
-function remove(id) {
+function removeTodo(id) {
   const options = {
     method: 'delete',
     headers,
@@ -55,8 +55,8 @@ function remove(id) {
 }
 
 export default {
-  get,
-  add,
-  toggle,
-  remove,
+  getTodos,
+  addTodo,
+  toggleTodo,
+  removeTodo,
 };

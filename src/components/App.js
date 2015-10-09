@@ -16,19 +16,19 @@ export default class App extends Component {
   }
 
   onAddTodo = (text) => {
-    API.add(text).then(this.getUpdatedTodos);
+    API.addTodo(text).then(this.getUpdatedTodos);
   }
 
   onToggleTodo = (id, status) => {
-    API.toggle(id, status).then(this.getUpdatedTodos);
+    API.toggleTodo(id, status).then(this.getUpdatedTodos);
   }
 
   onRemoveTodo = (id) => {
-    API.remove(id).then(this.getUpdatedTodos);
+    API.removeTodo(id).then(this.getUpdatedTodos);
   }
 
   getUpdatedTodos = () => {
-    API.get().then(todos => this.setState({ todos }));
+    API.getTodos().then(todos => this.setState({ todos }));
   }
 
   render() {
