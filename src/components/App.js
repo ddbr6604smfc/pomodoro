@@ -48,35 +48,16 @@ export default class App extends Component {
     const pendingTodos = todos.filter(todo => todo.status === 'pending').length;
 
     return (
-      <div className="container">
-        <div className="row">
-          <div className="col-xs-12">
-            <StatusPanel pendingTodos={pendingTodos} />
-          </div>
-        </div>
-
-        <div className="row">
-          <div className="col-xs-12">
-            <TodoList
-              todos={todos}
-              editing={editing}
-              toggleStatus={this.onToggleStatus}
-              destroy={this.onDestroyTodo}
-            />
-          </div>
-        </div>
-
-        <div className="row">
-          <div className="col-xs-12">
-            <AddTodo addTodo={this.onAddTodo} />
-          </div>
-        </div>
-
-        <div className="row">
-          <div className="col-xs-6 col-xs-offset-3 text-center">
-            <EditToggle toggle={this.onToggleEdit} editing={editing} />
-          </div>
-        </div>
+      <div>
+        <StatusPanel pendingTodos={pendingTodos} />
+        <TodoList
+          todos={todos}
+          editing={editing}
+          toggleStatus={this.onToggleStatus}
+          destroy={this.onDestroyTodo}
+        />
+        <AddTodo addTodo={this.onAddTodo} />
+        <EditToggle toggle={this.onToggleEdit} editing={editing} />
       </div>
     );
   }

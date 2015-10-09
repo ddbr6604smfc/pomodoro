@@ -12,14 +12,8 @@ export default class TodoList extends Component {
   render() {
     const { todos, editing, toggleStatus, destroy } = this.props;
 
-    const styles = {
-      container: {
-        marginBottom: '30px',
-      },
-    };
-
     return (
-      <ul className="list-group" style={styles.container}>
+      <ul>
         {
           todos.map(todo =>
             <Todo

@@ -1,5 +1,4 @@
 import React, { Component, PropTypes } from 'react';
-import { blue } from '../colors';
 
 export default class Todo extends Component {
   static propTypes = {
@@ -14,52 +13,22 @@ export default class Todo extends Component {
   render() {
     const { id, text, status, editing, toggleStatus, destroy } = this.props;
 
-    const styles = {
-      text: {
-        color: blue,
-        fontSize: '0.9em',
-        fontWeight: 'bold',
-        letterSpacing: '0.2px',
-      },
-    };
-
-    const labelClasses = {
-      'finished': 'label label-success',
-      'pending': 'label label-warning',
-      'stopped': 'label label-danger',
-    };
-
-    const className = labelClasses[status];
-
     const destroyButton = (
-      <div className="col-xs-3">
-        <button
-          className="btn btn-danger btn-xs"
-          onClick={() => destroy(id)}>
-          Delete
-        </button>
-      </div>
+      <button onClick={() => destroy(id)}>
+        Delete
+      </button>
     );
 
-    const statusLabel = (
-      <div className="col-xs-3">
-        <span
-          className={className}
-          onClick={() => toggleStatus(id)}>
-          {status}
-        </span>
-      </div>
+    const statusButton = (
+      <button onClick={() => toggleStatus(id)}>
+        {status}
+      </button>
     );
 
     return (
-      <li className="list-group-item" style={styles.text}>
-        <div className="row">
-          { editing ? destroyButton : null }
-          <div className="col-xs-9">
-            {text}
-          </div>
-          { editing ? null : statusLabel }
-        </div>
+      <li>
+        { editing ? destroyButton : statusButton }
+        {text}
       </li>
     );
   }

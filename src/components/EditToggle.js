@@ -9,15 +9,8 @@ export default class EditToggle extends Component {
   render() {
     const { toggle, editing } = this.props;
 
-    const styles = {
-      margin: '30px 0',
-    };
-
     return (
-      <button
-        onClick={() => toggle()}
-        style={styles}
-        className="btn btn-default">
+      <button onClick={() => toggle()}>
         {
           editing
             ? <span>Stop Editing</span>
