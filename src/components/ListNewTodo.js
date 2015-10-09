@@ -1,8 +1,8 @@
 import React, { Component, PropTypes } from 'react';
 
-export default class AddTodo extends Component {
+export default class ListNewTodo extends Component {
   static propTypes = {
-    addTodo: PropTypes.func.isRequired,
+    add: PropTypes.func.isRequired,
   };
 
   constructor(props) {
@@ -18,7 +18,7 @@ export default class AddTodo extends Component {
     const text = this.state.text.trim();
 
     if (text) {
-      this.props.addTodo(text);
+      this.props.add(text);
       this.setState({text: ''});
     }
   }

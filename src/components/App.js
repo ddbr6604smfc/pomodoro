@@ -1,9 +1,9 @@
 import React, { Component } from 'react';
 import API from '../API';
-import StatusPanel from './StatusPanel';
-import TodoList from './TodoList';
-import AddTodo from './AddTodo';
-import EditToggle from './EditToggle';
+import ListStatus from './ListStatus';
+import List from './List';
+import ListNewTodo from './ListNewTodo';
+import ListToggle from './ListToggle';
 
 export default class App extends Component {
   constructor(props) {
@@ -45,19 +45,19 @@ export default class App extends Component {
   render() {
     const { editing, todos } = this.state;
 
-    const pendingTodos = todos.filter(todo => todo.status === 'pending').length;
+    const pending = todos.filter(todo => todo.status === 'pending').length;
 
     return (
       <div>
-        <StatusPanel pendingTodos={pendingTodos} />
-        <TodoList
+        <ListStatus pending={pending} />
+        <List
           todos={todos}
-          editing={editing}
-          toggleStatus={this.onToggleStatus}
-          destroy={this.onDestroyTodo}
+          isEditing={editing}
+          toggleTodo={this.onToggleStatus}
+          removeTodo={this.onDestroyTodo}
         />
-        <AddTodo addTodo={this.onAddTodo} />
-        <EditToggle toggle={this.onToggleEdit} editing={editing} />
+        <ListNewTodo add={this.onAddTodo} />
+        <ListToggle isEditing={editing} toggle={this.onToggleEdit} />
       </div>
     );
   }
