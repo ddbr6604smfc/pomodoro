@@ -1,16 +1,12 @@
 import React, { Component } from 'react';
 import API from '../API';
-import ListStatus from './ListStatus';
 import List from './List';
-import ListNewTodo from './ListNewTodo';
-import ListToggle from './ListToggle';
 
 export default class App extends Component {
   constructor(props) {
     super(props);
 
     this.state = {
-      editing: false,
       todos: API.get(),
     };
   }
@@ -21,44 +17,31 @@ export default class App extends Component {
     });
   }
 
-  onToggleEdit = () => {
-    this.setState({
-      editing: !this.state.editing,
-    });
-  }
-
   onAddTodo = (text) => {
     API.create(text);
     this.onUpdate();
   }
 
-  onToggleStatus = (id) => {
+  onToggleTodo = (id) => {
     API.toggle(id);
     this.onUpdate();
   }
 
-  onDestroyTodo = (id) => {
+  onRemoveTodo = (id) => {
     API.destroy(id);
     this.onUpdate();
   }
 
   render() {
-    const { editing, todos } = this.state;
-
-    const pending = todos.filter(todo => todo.status === 'pending').length;
+    const { todos } = this.state;
 
     return (
-      <div>
-        <ListStatus pending={pending} />
-        <List
-          todos={todos}
-          isEditing={editing}
-          toggleTodo={this.onToggleStatus}
-          removeTodo={this.onDestroyTodo}
-        />
-        <ListNewTodo add={this.onAddTodo} />
-        <ListToggle isEditing={editing} toggle={this.onToggleEdit} />
-      </div>
+      <List
+        todos={todos}
+        addTodo={this.onAddTodo}
+        toggleTodo={this.onToggleTodo}
+        removeTodo={this.onRemoveTodo}
+      />
     );
   }
 }
