@@ -1,5 +1,6 @@
 import React from 'react';
 import { render } from 'react-dom';
+import API from './API';
 import App from './components/App';
 
-render(<App />, document.getElementById('root'));
+render(<App {...API} />, document.getElementById('root'));

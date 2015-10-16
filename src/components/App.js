@@ -1,8 +1,14 @@
-import React, { Component } from 'react';
-import API from '../API';
+import React, { Component, PropTypes } from 'react';
 import List from './List';
 
 export default class App extends Component {
+  static propTypes = {
+    getTodos: PropTypes.func.isRequired,
+    addTodo: PropTypes.func.isRequired,
+    toggleTodo: PropTypes.func.isRequired,
+    removeTodo: PropTypes.func.isRequired,
+  };
+
   constructor(props) {
     super(props);
 
@@ -16,19 +22,19 @@ export default class App extends Component {
   }
 
   onAddTodo = (text) => {
-    API.addTodo(text).then(this.getUpdatedTodos);
+    this.props.addTodo(text).then(this.getUpdatedTodos);
   }
 
   onToggleTodo = (id, status) => {
-    API.toggleTodo(id, status).then(this.getUpdatedTodos);
+    this.props.toggleTodo(id, status).then(this.getUpdatedTodos);
   }
 
   onRemoveTodo = (id) => {
-    API.removeTodo(id).then(this.getUpdatedTodos);
+    this.props.removeTodo(id).then(this.getUpdatedTodos);
   }
 
   getUpdatedTodos = () => {
-    API.getTodos().then(todos => this.setState({ todos }));
+    this.props.getTodos().then(todos => this.setState({ todos }));
   }
 
   render() {
