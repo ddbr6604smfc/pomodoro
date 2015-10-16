@@ -21,20 +21,12 @@ export default class App extends Component {
     this.getUpdatedTodos();
   }
 
-  onAddTodo = (text) => {
-    this.props.addTodo(text).then(this.getUpdatedTodos);
-  }
-
-  onToggleTodo = (id, status) => {
-    this.props.toggleTodo(id, status).then(this.getUpdatedTodos);
-  }
-
-  onRemoveTodo = (id) => {
-    this.props.removeTodo(id).then(this.getUpdatedTodos);
-  }
-
   getUpdatedTodos = () => {
     this.props.getTodos().then(todos => this.setState({ todos }));
+  }
+
+  updateAfter = (action) => {
+    return (...args) => action(...args).then(this.getUpdatedTodos);
   }
 
   render() {
@@ -43,9 +35,9 @@ export default class App extends Component {
     return (
       <List
         todos={todos}
-        addTodo={this.onAddTodo}
-        toggleTodo={this.onToggleTodo}
-        removeTodo={this.onRemoveTodo}
+        addTodo={this.updateAfter(this.props.addTodo)}
+        toggleTodo={this.updateAfter(this.props.toggleTodo)}
+        removeTodo={this.updateAfter(this.props.removeTodo)}
       />
     );
   }
