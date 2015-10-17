@@ -1,6 +1,6 @@
 import React, { Component, PropTypes } from 'react';
 
-export default class ListStatus extends Component {
+export default class Status extends Component {
   static propTypes = {
     pending: PropTypes.number.isRequired,
   };

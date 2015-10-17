@@ -1,6 +1,6 @@
 import React from 'react';
 import { render } from 'react-dom';
 import API from './API';
-import App from './components/App';
+import AppContainer from './containers/AppContainer';
 
-render(<App {...API} />, document.getElementById('root'));
+render(<AppContainer { ...API } />, document.getElementById('root'));

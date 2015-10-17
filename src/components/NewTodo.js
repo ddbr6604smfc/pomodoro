@@ -1,6 +1,6 @@
 import React, { Component, PropTypes } from 'react';
 
-export default class ListNewTodo extends Component {
+export default class NewTodo extends Component {
   static propTypes = {
     add: PropTypes.func.isRequired,
   };

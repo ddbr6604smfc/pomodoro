@@ -1,9 +1,12 @@
 import React, { Component, PropTypes } from 'react';
-import List from './List';
+import Status from './Status';
+import Toggle from './Toggle';
+import NewTodo from './NewTodo';
+import Todo from './Todo';
 
 export default class App extends Component {
   static propTypes = {
-    getTodos: PropTypes.func.isRequired,
+    todos: PropTypes.array.isRequired,
     addTodo: PropTypes.func.isRequired,
     toggleTodo: PropTypes.func.isRequired,
     removeTodo: PropTypes.func.isRequired,
@@ -13,32 +16,42 @@ export default class App extends Component {
     super(props);
 
     this.state = {
-      todos: [],
+      isEditing: false,
     };
   }
 
-  componentDidMount() {
-    this.getUpdatedTodos();
-  }
-
-  getUpdatedTodos = () => {
-    this.props.getTodos().then(todos => this.setState({ todos }));
-  }
-
-  updateAfter = (action) => {
-    return (...args) => action(...args).then(this.getUpdatedTodos);
+  onToggleEdit = () => {
+    this.setState({
+      isEditing: !this.state.isEditing,
+    });
   }
 
   render() {
-    const { todos } = this.state;
+    const { todos, addTodo, toggleTodo, removeTodo } = this.props;
+
+    const pending = todos.filter(todo => todo.status === 'pending').length;
+
+    const todoComponents = todos.map(todo =>
+      <li key={todo.id}>
+        <Todo
+          { ...todo }
+          isEditing={this.state.isEditing}
+          toggle={() => toggleTodo(todo.id, todo.status)}
+          remove={() => removeTodo(todo.id)}
+        />
+      </li>
+    );
 
     return (
-      <List
-        todos={todos}
-        addTodo={this.updateAfter(this.props.addTodo)}
-        toggleTodo={this.updateAfter(this.props.toggleTodo)}
-        removeTodo={this.updateAfter(this.props.removeTodo)}
-      />
+      <div>
+        <Status pending={pending} />
+        <Toggle
+          isEditing={this.state.isEditing}
+          toggle={this.onToggleEdit}
+        />
+        <ul>{todoComponents}</ul>
+        <NewTodo add={text => addTodo(text)} />
+      </div>
     );
   }
 }
