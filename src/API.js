@@ -1,58 +1,45 @@
 import fetch from 'isomorphic-fetch';
 
-// required for every Parse request
 const headers = {
   'X-Parse-Application-Id': 'HrSi99CxF6EuG39NYNCLNXdnAuZ3fdrcNEMwfxNX',
   'X-Parse-REST-API-Key': 'Qv0Os8haaE8QAbi9GNECnpMFf6oZPZDedK1jjgpT',
 };
 
-function getTodos() {
-  return fetch('https://api.parse.com/1/classes/Todo', { headers })
+const getTodos = () =>
+  fetch('https://api.parse.com/1/classes/Todo', { headers })
     .then(response => response.json())
-    .then(response => {
-      return response.results.map(todo => ({ ...todo, id: todo.objectId }));
-    });
-}
+    .then(response =>
+      response.results.map(todo => ({ ...todo, id: todo.objectId }))
+    );
 
-function addTodo(text) {
-  const options = {
+const addTodo = (text) =>
+  fetch('https://api.parse.com/1/classes/Todo', {
     method: 'post',
     headers,
     body: JSON.stringify({
       text,
       status: 'pending',
     }),
-  };
+  });
 
-  return fetch('https://api.parse.com/1/classes/Todo', options);
-}
-
-function toggleTodo(id, status) {
-  const nextStatus = {
-    'pending': 'finished',
-    'finished': 'stopped',
-    'stopped': 'pending',
-  }[status];
-
-  const options = {
+const toggleTodo = (id, status) =>
+  fetch(`https://api.parse.com/1/classes/Todo/${id}`, {
     method: 'put',
     headers,
     body: JSON.stringify({
-      status: nextStatus,
+      status: {
+        'pending': 'finished',
+        'finished': 'stopped',
+        'stopped': 'pending',
+      }[status],
     }),
-  };
+  });
 
-  return fetch(`https://api.parse.com/1/classes/Todo/${id}`, options);
-}
-
-function removeTodo(id) {
-  const options = {
+const removeTodo = (id) =>
+  fetch(`https://api.parse.com/1/classes/Todo/${id}`, {
     method: 'delete',
     headers,
-  };
-
-  return fetch(`https://api.parse.com/1/classes/Todo/${id}`, options);
-}
+  });
 
 export default {
   getTodos,
