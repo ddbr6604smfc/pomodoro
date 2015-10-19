@@ -1,26 +1,15 @@
 import expect from 'expect';
-import React from 'react';
-import TestUtils from 'react-addons-test-utils';
+import render from '../helpers/render';
 import todoFixtures from '../fixtures/todos';
 import App from '../../src/components/App';
 
 function setup() {
-  const props = {
+  return render(App, {
     todos: todoFixtures,
     addTodo: expect.createSpy(),
     toggleTodo: expect.createSpy(),
     removeTodo: expect.createSpy(),
-  };
-
-  const renderer = TestUtils.createRenderer();
-  renderer.render(<App { ...props }/>);
-  const output = renderer.getRenderOutput();
-
-  return {
-    props,
-    renderer,
-    output,
-  };
+  });
 }
 
 describe('App Component', () => {
@@ -37,13 +26,13 @@ describe('App Component', () => {
   });
 
   it('should toggle edit mode', () => {
-    const { output, renderer } = setup();
+    const { output, rerender } = setup();
     const [ , toggle ] = output.props.children;
 
     expect(toggle.props.isEditing).toBe(false);
     toggle.props.toggle();
 
-    const updatedOutput = renderer.getRenderOutput();
+    const updatedOutput = rerender();
     const [ , updatedToggle ] = updatedOutput.props.children;
     expect(updatedToggle.props.isEditing).toBe(true);
   });

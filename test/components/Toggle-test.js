@@ -1,28 +1,17 @@
 import expect from 'expect';
-import React from 'react';
-import TestUtils from 'react-addons-test-utils';
+import render from '../helpers/render';
 import Toggle from '../../src/components/Toggle';
 
 function setup() {
-  const props = {
+  return render(Toggle, {
     isEditing: false,
     toggle: expect.createSpy(),
-  };
-
-  const renderer = TestUtils.createRenderer();
-  renderer.render(<Toggle { ...props }/>);
-  const output = renderer.getRenderOutput();
-
-  return {
-    props,
-    renderer,
-    output,
-  };
+  });
 }
 
 describe('Toggle Component', () => {
   it('should render correctly', () => {
-    const { output, props, renderer } = setup();
+    const { output, rerender } = setup();
 
 
     /**
@@ -35,8 +24,10 @@ describe('Toggle Component', () => {
      * isEditing: true
      */
 
-    renderer.render(<Toggle { ...props } isEditing />);
-    const isEditingOutput = renderer.getRenderOutput();
+    const isEditingOutput = rerender({
+      isEditing: true,
+    });
+
     expect(isEditingOutput.props.children).toBe('Cancel');
   });
 

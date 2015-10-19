@@ -1,32 +1,21 @@
 import expect from 'expect';
-import React from 'react';
-import TestUtils from 'react-addons-test-utils';
+import render from '../helpers/render';
 import Todo from '../../src/components/Todo';
 
 function setup() {
-  const props = {
+  return render(Todo, {
     id: '1',
     text: 'take out garbage',
     status: 'pending',
     isEditing: false,
     toggle: expect.createSpy(),
     remove: expect.createSpy(),
-  };
-
-  const renderer = TestUtils.createRenderer();
-  renderer.render(<Todo { ...props }/>);
-  const output = renderer.getRenderOutput();
-
-  return {
-    props,
-    renderer,
-    output,
-  };
+  });
 }
 
 describe('Todo Component', () => {
   it('should render correctly', () => {
-    const { output, renderer, props } = setup();
+    const { output, rerender } = setup();
 
     /**
      * isEditing: false
@@ -40,8 +29,10 @@ describe('Todo Component', () => {
      * isEditing: true
      */
 
-    renderer.render(<Todo { ...props } isEditing />);
-    const isEditingOutput = renderer.getRenderOutput();
+    const isEditingOutput = rerender({
+      isEditing: true,
+    });
+
     const [ removeButton ] = isEditingOutput.props.children;
     expect(removeButton.props.children).toBe('Delete');
   });
@@ -55,11 +46,16 @@ describe('Todo Component', () => {
   });
 
   it('should remove todo', () => {
-    const { props, renderer } = setup();
+    const { output, props } = render(Todo, {
+      id: '1',
+      text: 'take out garbage',
+      status: 'pending',
+      isEditing: true,
+      toggle: expect.createSpy(),
+      remove: expect.createSpy(),
+    });
 
-    renderer.render(<Todo { ...props } isEditing />);
-    const isEditingOutput = renderer.getRenderOutput();
-    const [ remove ] = isEditingOutput.props.children;
+    const [ remove ] = output.props.children;
 
     remove.props.onClick();
     expect(props.remove.calls.length).toBe(1);

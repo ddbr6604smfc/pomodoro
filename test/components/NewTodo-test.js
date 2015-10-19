@@ -1,22 +1,11 @@
 import expect from 'expect';
-import React from 'react';
-import TestUtils from 'react-addons-test-utils';
+import render from '../helpers/render';
 import NewTodo from '../../src/components/NewTodo';
 
 function setup() {
-  const props = {
+  return render(NewTodo, {
     add: expect.createSpy(),
-  };
-
-  const renderer = TestUtils.createRenderer();
-  renderer.render(<NewTodo { ...props }/>);
-  const output = renderer.getRenderOutput();
-
-  return {
-    props,
-    renderer,
-    output,
-  };
+  });
 }
 
 describe('NewTodo Component', () => {
@@ -38,7 +27,7 @@ describe('NewTodo Component', () => {
   });
 
   it('should reset input value after adding new todo', () => {
-    const { output, renderer } = setup();
+    const { output, rerender } = setup();
     const [ input ] = output.props.children;
 
     input.props.onChange({
@@ -51,7 +40,7 @@ describe('NewTodo Component', () => {
       preventDefault: () => {},
     });
 
-    const updatedOutput = renderer.getRenderOutput();
+    const updatedOutput = rerender();
     const [ updatedInput ] = updatedOutput.props.children;
     expect(updatedInput.props.value).toBe('');
   });

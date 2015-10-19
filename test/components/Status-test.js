@@ -1,19 +1,16 @@
 import expect from 'expect';
-import React from 'react';
-import TestUtils from 'react-addons-test-utils';
+import render from '../helpers/render';
 import Status from '../../src/components/Status';
 
 describe('Status Component', () => {
   it('should display the # of pending todos', () => {
-    const renderer = TestUtils.createRenderer();
-    renderer.render(<Status pending={4} />);
+    const { output, rerender } = render(Status, {
+      pending: 4,
+    });
 
-    const output = renderer.getRenderOutput();
     expect(output.props.children).toBe('4 todos pending');
 
-    renderer.render(<Status pending={0} />);
-
-    const updatedOutput = renderer.getRenderOutput();
+    const updatedOutput = rerender({pending: 0});
     expect(updatedOutput.props.children).toBe('No todos pending');
   });
 });
