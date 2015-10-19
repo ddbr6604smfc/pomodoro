@@ -1,65 +1,75 @@
 import expect from 'expect';
 import React from 'react';
-import ReactDOM from 'react-dom';
 import TestUtils from 'react-addons-test-utils';
 import NewTodo from '../../src/components/NewTodo';
 
+function setup() {
+  const props = {
+    add: expect.createSpy(),
+  };
+
+  const renderer = TestUtils.createRenderer();
+  renderer.render(<NewTodo { ...props }/>);
+  const output = renderer.getRenderOutput();
+
+  return {
+    props,
+    renderer,
+    output,
+  };
+}
+
 describe('NewTodo Component', () => {
   it('should add a new todo', () => {
-    const props = {
-      add: expect.createSpy(),
-    };
+    const { output, props } = setup();
+    const [ input ] = output.props.children;
 
-    const newTodo = TestUtils.renderIntoDocument(<NewTodo { ...props }/>);
-    const form = ReactDOM.findDOMNode(newTodo);
-    const [ input ] = TestUtils.scryRenderedDOMComponentsWithTag(newTodo, 'input');
-
-    TestUtils.Simulate.change(input, {
+    input.props.onChange({
       target: {
         value: 'hello world',
       },
     });
 
-    TestUtils.Simulate.submit(form);
+    output.props.onSubmit({
+      preventDefault: () => {},
+    });
+
     expect(props.add.calls[0].arguments[0]).toBe('hello world');
   });
 
   it('should reset input value after adding new todo', () => {
-    const props = {
-      add: expect.createSpy(),
-    };
+    const { output, renderer } = setup();
+    const [ input ] = output.props.children;
 
-    const newTodo = TestUtils.renderIntoDocument(<NewTodo { ...props }/>);
-    const form = ReactDOM.findDOMNode(newTodo);
-    const [ input ] = TestUtils.scryRenderedDOMComponentsWithTag(newTodo, 'input');
-
-    TestUtils.Simulate.change(input, {
+    input.props.onChange({
       target: {
         value: 'hello world',
       },
     });
 
-    expect(input.value).toBe('hello world');
-    TestUtils.Simulate.submit(form);
-    expect(input.value).toBe('');
+    output.props.onSubmit({
+      preventDefault: () => {},
+    });
+
+    const updatedOutput = renderer.getRenderOutput();
+    const [ updatedInput ] = updatedOutput.props.children;
+    expect(updatedInput.props.value).toBe('');
   });
 
   it('should only add a new todo if text isn\'t empty', () => {
-    const props = {
-      add: expect.createSpy(),
-    };
+    const { output, props } = setup();
+    const [ input ] = output.props.children;
 
-    const newTodo = TestUtils.renderIntoDocument(<NewTodo { ...props }/>);
-    const form = ReactDOM.findDOMNode(newTodo);
-    const [ input ] = TestUtils.scryRenderedDOMComponentsWithTag(newTodo, 'input');
-
-    TestUtils.Simulate.change(input, {
+    input.props.onChange({
       target: {
-        value: '       ', // whitespace
+        value: '      ',
       },
     });
 
-    TestUtils.Simulate.submit(form);
+    output.props.onSubmit({
+      preventDefault: () => {},
+    });
+
     expect(props.add.calls.length).toBe(0);
   });
 });

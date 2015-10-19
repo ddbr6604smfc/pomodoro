@@ -1,25 +1,35 @@
 import expect from 'expect';
 import React from 'react';
-import ReactDOM from 'react-dom';
 import TestUtils from 'react-addons-test-utils';
 import Toggle from '../../src/components/Toggle';
 
+function setup() {
+  const props = {
+    isEditing: false,
+    toggle: expect.createSpy(),
+  };
+
+  const renderer = TestUtils.createRenderer();
+  renderer.render(<Toggle { ...props }/>);
+  const output = renderer.getRenderOutput();
+
+  return {
+    props,
+    renderer,
+    output,
+  };
+}
+
 describe('Toggle Component', () => {
   it('should render correctly', () => {
-    const props = {
-      isEditing: false,
-      toggle: expect.createSpy(),
-    };
+    const { output, props, renderer } = setup();
 
-    const renderer = TestUtils.createRenderer();
 
     /**
      * isEditing: false
      */
 
-    renderer.render(<Toggle { ...props } />);
-    const defaultOutput = renderer.getRenderOutput();
-    expect(defaultOutput.props.children).toBe('Edit');
+    expect(output.props.children).toBe('Edit');
 
     /**
      * isEditing: true
@@ -31,13 +41,8 @@ describe('Toggle Component', () => {
   });
 
   it('should toggle edit mode', () => {
-    const props = {
-      isEditing: false,
-      toggle: expect.createSpy(),
-    };
-
-    const toggle = TestUtils.renderIntoDocument(<Toggle { ...props} />);
-    TestUtils.Simulate.click(ReactDOM.findDOMNode(toggle));
+    const { output, props } = setup();
+    output.props.onClick();
     expect(props.toggle.calls.length).toBe(1);
   });
 });
