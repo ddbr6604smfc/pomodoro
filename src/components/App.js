@@ -1,6 +1,5 @@
 import React, { Component, PropTypes } from 'react';
 import Status from './Status';
-import Toggle from './Toggle';
 import NewTodo from './NewTodo';
 import Todo from './Todo';
 
@@ -12,20 +11,6 @@ export default class App extends Component {
     removeTodo: PropTypes.func.isRequired,
   };
 
-  constructor(props) {
-    super(props);
-
-    this.state = {
-      isEditing: false,
-    };
-  }
-
-  onToggleEdit = () => {
-    this.setState({
-      isEditing: !this.state.isEditing,
-    });
-  }
-
   render() {
     const { todos, addTodo, toggleTodo, removeTodo } = this.props;
 
@@ -35,7 +20,6 @@ export default class App extends Component {
       <li key={todo.id}>
         <Todo
           { ...todo }
-          isEditing={this.state.isEditing}
           toggle={() => toggleTodo(todo.id, todo.status)}
           remove={() => removeTodo(todo.id)}
         />
@@ -45,10 +29,6 @@ export default class App extends Component {
     return (
       <div>
         <Status pending={pending} />
-        <Toggle
-          isEditing={this.state.isEditing}
-          toggle={this.onToggleEdit}
-        />
         <ul>{todoComponents}</ul>
         <NewTodo add={text => addTodo(text)} />
       </div>

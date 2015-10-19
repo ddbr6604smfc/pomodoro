@@ -5,30 +5,18 @@ export default class Todo extends Component {
     id: PropTypes.string.isRequired,
     text: PropTypes.string.isRequired,
     status: PropTypes.string.isRequired,
-    isEditing: PropTypes.bool.isRequired,
     toggle: PropTypes.func.isRequired,
     remove: PropTypes.func.isRequired,
   };
 
   render() {
-    const { text, status, isEditing, toggle, remove } = this.props;
-
-    const todoStatus = (
-      <button onClick={toggle}>
-        {status}
-      </button>
-    );
-
-    const todoRemove = (
-      <button onClick={remove}>
-        Delete
-      </button>
-    );
+    const { text, status, toggle, remove } = this.props;
 
     return (
       <div>
-        { isEditing ? todoRemove : todoStatus }
+        <button onClick={toggle}>{status}</button>
         {text}
+        <button onClick={remove}>Delete</button>
       </div>
     );
   }

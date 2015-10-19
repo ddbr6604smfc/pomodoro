@@ -7,7 +7,6 @@ function setup() {
     id: '1',
     text: 'take out garbage',
     status: 'pending',
-    isEditing: false,
     toggle: expect.createSpy(),
     remove: expect.createSpy(),
   });
@@ -15,25 +14,10 @@ function setup() {
 
 describe('Todo Component', () => {
   it('should render correctly', () => {
-    const { output, rerender } = setup();
-
-    /**
-     * isEditing: false
-     */
-
-    const [ toggleButton, text ] = output.props.children;
-    expect(toggleButton.props.children).toBe('pending');
+    const { output } = setup();
+    const [ toggleButton, text, removeButton ] = output.props.children;
     expect(text).toBe('take out garbage');
-
-    /**
-     * isEditing: true
-     */
-
-    const isEditingOutput = rerender({
-      isEditing: true,
-    });
-
-    const [ removeButton ] = isEditingOutput.props.children;
+    expect(toggleButton.props.children).toBe('pending');
     expect(removeButton.props.children).toBe('Delete');
   });
 
@@ -46,16 +30,8 @@ describe('Todo Component', () => {
   });
 
   it('should remove todo', () => {
-    const { output, props } = render(Todo, {
-      id: '1',
-      text: 'take out garbage',
-      status: 'pending',
-      isEditing: true,
-      toggle: expect.createSpy(),
-      remove: expect.createSpy(),
-    });
-
-    const [ remove ] = output.props.children;
+    const { output, props } = setup();
+    const [ , , remove ] = output.props.children;
 
     remove.props.onClick();
     expect(props.remove.calls.length).toBe(1);
