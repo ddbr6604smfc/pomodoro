@@ -3,10 +3,12 @@ import App from '../components/App';
 
 export default class AppContainer extends Component {
   static propTypes = {
-    getTodos: PropTypes.func.isRequired,
-    addTodo: PropTypes.func.isRequired,
-    toggleTodo: PropTypes.func.isRequired,
-    removeTodo: PropTypes.func.isRequired,
+    API: PropTypes.shape({
+      getTodos: PropTypes.func.isRequired,
+      addTodo: PropTypes.func.isRequired,
+      toggleTodo: PropTypes.func.isRequired,
+      removeTodo: PropTypes.func.isRequired,
+    }).isRequired,
   };
 
   constructor(props) {
@@ -22,7 +24,7 @@ export default class AppContainer extends Component {
   }
 
   getUpdatedTodos = () => {
-    this.props.getTodos().then(todos => this.setState({ todos }));
+    this.props.API.getTodos().then(todos => this.setState({ todos }));
   }
 
   updateAfter = (action) => {
@@ -33,9 +35,9 @@ export default class AppContainer extends Component {
     return (
       <App
         todos={this.state.todos}
-        addTodo={this.updateAfter(this.props.addTodo)}
-        toggleTodo={this.updateAfter(this.props.toggleTodo)}
-        removeTodo={this.updateAfter(this.props.removeTodo)}
+        addTodo={this.updateAfter(this.props.API.addTodo)}
+        toggleTodo={this.updateAfter(this.props.API.toggleTodo)}
+        removeTodo={this.updateAfter(this.props.API.removeTodo)}
       />
     );
   }
